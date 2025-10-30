@@ -1,0 +1,12 @@
+# spdlog.yaml
+sinks:
+  - type: stdout
+    level: debug
+    pattern: "[%H:%M:%S %z] [%n] [%^%l%$] %v"
+
+  - type: rotating_file
+    name: file_logger
+    filename: "logs/app.log"
+    max_size: 10485760 # 10MB
+    max_files: 5
+    level: info
