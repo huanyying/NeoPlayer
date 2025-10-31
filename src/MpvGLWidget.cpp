@@ -66,6 +66,13 @@ MpvGLWidget::MpvGLWidget(QWidget* parent, Qt::WindowFlags f) : QOpenGLWidget(par
 
 MpvGLWidget::~MpvGLWidget()
 {
+    m_running = false; // Signal the thread to stop
+    if (mpvEventThread && mpvEventThread->joinable()) {
+        mpvEventThread->join(); // Wait for the thread to finish
+    }
+    delete mpvEventThread; // Delete the thread object
+    mpvEventThread = nullptr;
+
     makeCurrent(); // 确保释放的是当前线程的opengl渲染
     if (mpvRender) // 释放渲染上下文
     {

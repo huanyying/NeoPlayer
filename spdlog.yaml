@@ -1,4 +1,4 @@
-# spdlog.yaml
+# spdlog.yaml 示例
 sinks:
   - type: stdout
     level: debug

@@ -18,7 +18,7 @@ public Q_SLOTS:
     void openMedia();
     void seek(int pos);
     void pauseResume();
-public:
+private:
     MpvGLWidget *m_mpv;
 private Q_SLOTS:
     void setSliderRange(int duration);

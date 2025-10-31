@@ -29,27 +29,24 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     resize(800, 600);
 
     // 连接槽和信号
-    connect(m_slider, SIGNAL(sliderMoved(int)), SLOT(seek(int))); // 播放进度条
-    connect(m_openBtn, SIGNAL(clicked(bool)), SLOT(openMedia())); // 打开视频
-    connect(m_playBtn, SIGNAL(clicked(bool)), SLOT(pauseResume())); // 播放/暂停
-    connect(m_mpv, SIGNAL(positionChanged(int)), this, SLOT(setSliderPosition(int))); // 更新进度条
-    connect(m_mpv, SIGNAL(durationChanged(int)), this, SLOT(setSliderRange(int))); // 设置进度条的范围
+    connect(m_slider, &QSlider::sliderMoved, this, &MainWindow::seek); // 播放进度条
+    connect(m_openBtn, &QPushButton::clicked, this, &MainWindow::openMedia); // 打开视频
+    connect(m_playBtn, &QPushButton::clicked, this, &MainWindow::pauseResume); // 播放/暂停
+    connect(m_mpv, &MpvGLWidget::positionChanged, this, &MainWindow::setSliderPosition); // 更新进度条
+    connect(m_mpv, &MpvGLWidget::durationChanged, this, &MainWindow::setSliderRange); // 设置进度条的范围
 }
 MainWindow::~MainWindow()
 {
     spdlog::drop_all();
-    if (m_mpv)
-    {
-        delete m_mpv;
-    }
+
 }
 
 void MainWindow::openMedia()
 {
-    QString file = QFileDialog::getOpenFileName(0, "Open a Video");
+    QString file = QFileDialog::getOpenFileName(this, "Open a Video");
     if (file.isEmpty())
     {
-        spdlog::error("open viedoName none");
+        spdlog::error("open videoName none");
         return;
     }
     m_mpv->command(QStringList() << "loadfile" << file); // 打开视频文件
